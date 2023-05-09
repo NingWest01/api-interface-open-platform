@@ -110,7 +110,7 @@ public class InterFaceInfoController {
      * 分页获取列表（封装类）
      */
     @GetMapping("/list/page/vo")
-    public BaseResponse<PageVo> listInterfaceInfoVOByPage(@RequestBody InterfaceInfoQueryRequest dto) {
+    public BaseResponse<PageVo> listInterfaceInfoVOByPage(InterfaceInfoQueryRequest dto) {
         // 限制爬虫
         ThrowUtils.throwIf(dto.getPageSize() > 20, ErrorCode.PARAMS_ERROR);
 
