@@ -88,6 +88,11 @@ declare namespace API {
     echostr?: string;
   };
 
+  type deleteInterfaceInfoUsingPOSTParams = {
+    /** id */
+    id: string;
+  };
+
   type DeleteRequest = {
     id?: number;
   };
@@ -127,15 +132,6 @@ declare namespace API {
     url?: string;
   };
 
-  type InterfaceInfoQueryRequest = {
-    current?: number;
-    keyword?: string;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-  };
-
   type InterfaceInfoUpdateRequest = {
     /** 接口名称 */
     description?: string;
@@ -168,6 +164,15 @@ declare namespace API {
     url?: string;
     userId?: number;
     userName?: string;
+  };
+
+  type listInterfaceInfoVOByPageUsingGETParams = {
+    current?: number;
+    keyword?: string;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
   };
 
   type LoginUserVO = {

@@ -17,17 +17,16 @@ export async function addInterfaceInfoUsingPOST(
   });
 }
 
-/** deleteInterfaceInfo POST /api/interfaceInfo/delete */
+/** deleteInterfaceInfo POST /api/interfaceInfo/delete/${param0} */
 export async function deleteInterfaceInfoUsingPOST(
-  body: API.DeleteRequest,
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.deleteInterfaceInfoUsingPOSTParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseboolean>('/api/interfaceInfo/delete', {
+  const { id: param0, ...queryParams } = params;
+  return request<API.BaseResponseboolean>(`/api/interfaceInfo/delete/${param0}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
+    params: { ...queryParams },
     ...(options || {}),
   });
 }
@@ -49,15 +48,15 @@ export async function getInterfaceInfoVOByIdUsingGET(
 
 /** listInterfaceInfoVOByPage GET /api/interfaceInfo/list/page/vo */
 export async function listInterfaceInfoVOByPageUsingGET(
-  body: API.InterfaceInfoQueryRequest,
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.listInterfaceInfoVOByPageUsingGETParams,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageVo>('/api/interfaceInfo/list/page/vo', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+    params: {
+      ...params,
     },
-    data: body,
     ...(options || {}),
   });
 }
