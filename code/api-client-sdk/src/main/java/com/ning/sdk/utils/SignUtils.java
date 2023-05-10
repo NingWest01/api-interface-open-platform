@@ -1,10 +1,8 @@
-package com.ning.demo.utils;
+package com.ning.sdk.utils;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.ning.demo.constant.Constant;
-import com.ning.demo.model.User;
+import com.ning.sdk.constant.Constant;
+import com.ning.sdk.model.User;
 
 import java.util.Date;
 import java.util.HashMap;

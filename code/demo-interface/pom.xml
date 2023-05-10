@@ -17,6 +17,14 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+
+        <!-- 引入自己编写的依赖 -->
+        <dependency>
+            <groupId>com.ning</groupId>
+            <artifactId>api-client-sdk</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

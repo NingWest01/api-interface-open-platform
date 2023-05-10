@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.ning.demo.constant.Constant;
 import com.ning.demo.core.CheckCore;
-import com.ning.demo.model.User;
+import com.ning.sdk.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

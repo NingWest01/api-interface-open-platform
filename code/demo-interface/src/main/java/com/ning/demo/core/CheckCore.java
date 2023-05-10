@@ -3,13 +3,11 @@ package com.ning.demo.core;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ning.demo.constant.Constant;
-import com.ning.demo.model.User;
 import com.ning.demo.utils.Md5Utils;
-import com.ning.demo.utils.SignUtils;
+import com.ning.sdk.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @author NingWest

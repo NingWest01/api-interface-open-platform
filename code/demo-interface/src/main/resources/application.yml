@@ -2,3 +2,9 @@ server:
   port: 8103
   servlet:
     context-path: /api
+
+# 配置
+api:
+  client:
+    access-key: ning
+    secret-key: abcdefg

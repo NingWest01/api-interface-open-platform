@@ -4,7 +4,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.ning.sdk.model.User;
-import com.ning.utils.SignUtils;
+import com.ning.sdk.utils.SignUtils;
 
 import java.util.HashMap;
 

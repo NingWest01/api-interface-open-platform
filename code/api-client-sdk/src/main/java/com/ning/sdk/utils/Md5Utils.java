@@ -1,4 +1,4 @@
-package com.ning.utils;
+package com.ning.sdk.utils;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
