@@ -28,8 +28,8 @@ public class CheckCore {
         Date now = new Date();
         // 现在时间戳
         long nowTime = now.getTime();
-        // 根据当前时间 获取两天前的时间戳
-        long time = DateUtil.offsetDay(now, -2).getTime();
+        // 根据当前时间 获取5分钟的时间戳
+        long time = DateUtil.offsetMinute(now, -5).getTime();
         // 如果传递过来的时间在这个范围内就证明是合法的时间请求
         if (StrUtil.isNotBlank(timestamp)) {
             // 转换为时间戳

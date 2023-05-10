@@ -1,0 +1,2 @@
+# 自动加载
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.ning.sdk.ApiClientSdkConfig
