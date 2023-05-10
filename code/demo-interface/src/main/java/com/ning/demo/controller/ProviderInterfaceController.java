@@ -1,9 +1,16 @@
 package com.ning.demo.controller;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
+import com.ning.demo.constant.Constant;
+import com.ning.demo.core.CheckCore;
 import com.ning.demo.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +44,19 @@ public class ProviderInterfaceController {
     }
 
     @PostMapping("/user")
-    public Map<String, Object> getUserName(@RequestBody User user) {
+    public Map<String, Object> getUserName(@RequestBody User user, HttpServletRequest request) {
+
+        // 校验签名的正确性
+        boolean isCheck = CheckCore.checkParams(user, request);
+
         Map<String, Object> data = new HashMap<>();
+
+        if (!isCheck) {
+            data.put("code", 500);
+            data.put("msg", "ERROR");
+            data.put("data", "ERROR 错误信息返回");
+            return data;
+        }
 
         data.put("code", 200);
         data.put("msg", "POST");
