@@ -11,6 +11,7 @@ import com.ning.api.exception.BusinessException;
 import com.ning.api.exception.ThrowUtils;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
+import com.ning.api.model.dto.interfaceinfo.InterfaceInfoRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.ning.api.model.entity.InterfaceInfo;
 import com.ning.api.model.entity.User;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 /**
  * 接口请求类型
@@ -41,6 +43,31 @@ public class InterFaceInfoController {
 
     @Resource
     private UserService userService;
+
+
+    /**
+     * 上线接口（仅管理员）
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> onlineInterfaceInfo(@Validated @RequestBody InterfaceInfoRequest dto) {
+        // 查询接口信息
+        interfaceInfoService.onlineInterfaceInfo(dto.getId());
+        return ResultUtils.success();
+    }
+
+    /**
+     * 下线接口（仅管理员）
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> offlineInterfaceInfo(@Validated @RequestBody InterfaceInfoRequest dto) {
+        // 查询接口信息
+        interfaceInfoService.offlineInterfaceInfo(dto.getId());
+        return ResultUtils.success();
+    }
+
+
 
     // region 增删改查
 
@@ -60,7 +87,7 @@ public class InterFaceInfoController {
      */
     @PostMapping("/delete/{id}")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> deleteInterfaceInfo(@PathVariable String id){
+    public BaseResponse<Boolean> deleteInterfaceInfo(@PathVariable String id) {
         boolean b = interfaceInfoService.removeById(id);
         return ResultUtils.success(b);
     }
@@ -83,7 +110,7 @@ public class InterFaceInfoController {
      * 根据 id 获取
      */
     @GetMapping("/get/vo")
-    public BaseResponse<InterfaceInfoVo> getInterfaceInfoVOById(long id, HttpServletRequest request) {
+    public BaseResponse<InterfaceInfoVo> getInterfaceInfoVOById(long id) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

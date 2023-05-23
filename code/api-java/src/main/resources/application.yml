@@ -1,3 +1,10 @@
+# 第三方服务的 密钥、密匙
+# 配置
+api:
+  client:
+    access-key: ning
+    secret-key: abcdefg
+
 spring:
   application:
     name: springboot-init

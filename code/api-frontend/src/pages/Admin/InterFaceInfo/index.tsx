@@ -8,10 +8,10 @@ import UpdateForm from './components/UpdateForm';
 import {
   addInterfaceInfoUsingPOST,
   deleteInterfaceInfoUsingPOST,
-  listInterfaceInfoVOByPageUsingGET,
+  listInterfaceInfoVOByPageUsingGET, offlineInterfaceInfoUsingPOST, onlineInterfaceInfoUsingPOST,
   updateInterfaceInfoUsingPOST
 } from "@/services/api-frontend/interFaceInfoController";
-import CreateForm from "@/pages/InterFaceInfo/components/CreateForm";
+import CreateForm from "@/pages/Admin/InterFaceInfo/components/CreateForm";
 
 // 主题内容
 const TableList: React.FC = () => {
@@ -108,6 +108,36 @@ const TableList: React.FC = () => {
   };
 
 
+// 上线接口
+  const onlineInterFace = async (id: any) => {
+
+    try {
+      await onlineInterfaceInfoUsingPOST({id});
+      message.success('上线成功');
+      // 删除完后刷新页面
+      actionRef.current?.reload();
+      return true;
+    } catch (error: any) {
+      message.error('上线失败：' + error.message);
+      return false;
+    }
+  };
+
+  // 下线接口
+  const offlineInterFace = async (id: any) => {
+    try {
+      await offlineInterfaceInfoUsingPOST({id});
+      message.success('下线成功');
+      // 删除完后刷新页面
+      actionRef.current?.reload();
+      return true;
+    } catch (error: any) {
+      message.error('下线失败：' + error.message);
+      return false;
+    }
+  };
+
+
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -196,10 +226,34 @@ const TableList: React.FC = () => {
         >
           修改
         </a>,
+        record.status === 0 ? <a
+          key="online"
+          onClick={() => {
+            onlineInterFace(record.id).then(r => {
+              console.log(r)
+            });
+            setCurrentRow(record);
+          }}
+        >
+          上线
+        </a> : null,
+        record.status === 1 ? <a
+          key="offline"
+          onClick={() => {
+            offlineInterFace(record.id).then(r => {
+              console.log(r)
+            });
+            setCurrentRow(record);
+          }}
+        >
+          下线
+        </a> : null,
         <a
           key="delete"
           onClick={() => {
-            handleRemove(record)
+            handleRemove(record).then(r => {
+              console.log(r)
+            })
           }}
         >
           删除

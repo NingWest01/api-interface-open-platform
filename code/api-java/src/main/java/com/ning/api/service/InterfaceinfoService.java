@@ -31,4 +31,16 @@ public interface InterfaceinfoService extends IService<InterfaceInfo> {
      * 分页查询
      */
     Page<InterfaceInfo> selectPage(InterfaceInfoQueryRequest dto);
+
+    /**
+     * 上线接口
+     * @param id  id
+     */
+    void onlineInterfaceInfo(Long id);
+
+    /**
+     * 下线接口
+     * @param id
+     */
+    void offlineInterfaceInfo(Long id);
 }

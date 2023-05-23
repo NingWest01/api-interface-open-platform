@@ -2,7 +2,6 @@ package com.ning.api.common;
 
 /**
  * 自定义错误码
-
  */
 public enum ErrorCode {
 
@@ -15,8 +14,8 @@ public enum ErrorCode {
     SYSTEM_ERROR(50000, "系统内部异常"),
     PARAMETER_ERROR(50002, "参数错误"),
     NO_HAVE_ERROR(50003, "对象不存在"),
+    NO_RETURN_ERROR(50004, "错误返回，接口调用失败"),
     OPERATION_ERROR(50001, "操作失败");
-
 
 
     /**

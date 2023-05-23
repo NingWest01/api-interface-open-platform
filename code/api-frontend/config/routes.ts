@@ -15,7 +15,7 @@ export default [
     path: '/',
     name: 'home',
     icon: 'home',
-    component: './Welcome',
+    component: './Index',
   },
   {
     path: '/user',
@@ -38,7 +38,7 @@ export default [
         name: 'interfaceInfo',
         icon: 'table',
         path: '/admin/interface_info',
-        component: './InterFaceInfo',
+        component: './Admin/InterFaceInfo',
       }
     ],
   },

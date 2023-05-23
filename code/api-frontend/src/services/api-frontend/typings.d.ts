@@ -132,6 +132,11 @@ declare namespace API {
     url?: string;
   };
 
+  type InterfaceInfoRequest = {
+    /** id */
+    id?: number;
+  };
+
   type InterfaceInfoUpdateRequest = {
     /** 接口名称 */
     description?: string;
