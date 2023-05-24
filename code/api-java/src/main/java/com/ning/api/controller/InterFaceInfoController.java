@@ -3,7 +3,6 @@ package com.ning.api.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ning.api.annotation.AuthCheck;
 import com.ning.api.common.BaseResponse;
-import com.ning.api.common.DeleteRequest;
 import com.ning.api.common.ErrorCode;
 import com.ning.api.common.ResultUtils;
 import com.ning.api.constant.UserConstant;
@@ -14,7 +13,6 @@ import com.ning.api.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.ning.api.model.entity.InterfaceInfo;
-import com.ning.api.model.entity.User;
 import com.ning.api.model.vo.InterfaceInfoVo;
 import com.ning.api.model.vo.PageVo;
 import com.ning.api.service.InterfaceinfoService;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 /**
  * 接口请求类型

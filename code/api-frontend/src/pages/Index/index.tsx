@@ -1,7 +1,9 @@
-import { PageContainer } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
-import { Card, theme } from 'antd';
-import React from 'react';
+import {PageContainer} from '@ant-design/pro-components';
+import {useModel} from '@umijs/max';
+import {Card, Pagination, theme} from 'antd';
+import type {PaginationProps} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {listInterfaceInfoVOByPageUsingGET} from "@/services/api-frontend/interFaceInfoController";
 
 /**
  * 每个单独的卡片，为了复用样式抽成了组件
@@ -12,11 +14,11 @@ const InfoCard: React.FC<{
   title: string;
   index: number;
   desc: string;
-  href: string;
-}> = ({ title, href, index, desc }) => {
-  const { useToken } = theme;
+  id: number;
+}> = ({title, id, index, desc}) => {
+  const {useToken} = theme;
 
-  const { token } = useToken();
+  const {token} = useToken();
 
   return (
     <div
@@ -76,7 +78,8 @@ const InfoCard: React.FC<{
       >
         {desc}
       </div>
-      <a href={href} target="_blank" rel="noreferrer">
+      {/*<a href={`interfaceInfo/detail/${id}`} target="_blank" rel="noreferrer">*/}
+      <a href={`interfaceInfo/detail/${id}`}>
         了解更多 {'>'}
       </a>
     </div>
@@ -84,8 +87,43 @@ const InfoCard: React.FC<{
 };
 
 const Index: React.FC = () => {
-  const { token } = theme.useToken();
-  const { initialState } = useModel('@@initialState');
+  const {token} = theme.useToken();
+  const {initialState} = useModel('@@initialState');
+
+  const [data, setData] = useState<API.InterfaceInfoVo[]>();
+  const [total, setTotal] = useState<number>();
+
+  const [loading, setLoading] = useState(true);
+  const [current, setCurrent] = useState(1);
+  // 获取数据
+  const getData = async (current: number) => {
+    setCurrent(current)
+    try {
+      let result = await listInterfaceInfoVOByPageUsingGET({
+        current: current,
+        pageSize: 4
+      });
+      // @ts-ignore
+      setData(result?.data?.reconds)
+      setTotal(result?.data?.total)
+      setLoading(false)
+      return true;
+    } catch (error: any) {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    getData(1)
+  }, [])
+
+  // 点击切换分页
+  const onChangePage: PaginationProps['onChange'] = (page) => {
+    setCurrent(current)
+    getData(page)
+  };
+
+
   return (
     <PageContainer>
       <Card
@@ -114,21 +152,33 @@ const Index: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 Ant Design Pro
+            欢迎使用 API 接口开放平台
           </div>
-          <p
+          <div
             style={{
+              textIndent: '2em',
               fontSize: '14px',
               color: token.colorTextSecondary,
               lineHeight: '22px',
               marginTop: 16,
               marginBottom: 32,
-              width: '65%',
+              width: '100%',
             }}
           >
-            Ant Design Pro 是一个整合了 umi，Ant Design 和 ProComponents
-            的脚手架方案。致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。
-          </p>
+            <p>
+              欢迎使用我们的API接口开放平台！我们致力于为开发者和企业提供一个强大、安全和灵活的接口服务。通过我们的平台，您可以访问各种功能丰富的API，以满足您的应用程序和业务需求。
+            </p>
+            <p>
+              我们的API接口开放平台提供了广泛的功能和服务，涵盖了多个领域和行业。无论您是开发移动应用程序、构建网站、设计智能设备还是处理大数据，我们都能够为您提供合适的API接口。
+            </p>
+            <p>
+              使用我们的API接口，您可以轻松地与我们的系统进行交互，获取实时数据、发送请求、执行操作和管理资源。我们的接口设计简洁易用，同时保证了安全性和稳定性。我们采用标准化的协议和认证机制，确保您的数据和用户信息的保密性和完整性。
+            </p>
+            <p>
+              开始使用我们的API接口开放平台，并体验前所未有的开发便利和灵活性！如有任何疑问或需求，请随时联系我们的团队。感谢您选择我们的服务！
+            </p>
+          </div>
+          <h2> 接口实例： </h2>
           <div
             style={{
               display: 'flex',
@@ -136,27 +186,39 @@ const Index: React.FC = () => {
               gap: 16,
             }}
           >
-            <InfoCard
-              index={1}
-              href="https://umijs.org/docs/introduce/introduce"
-              title="了解 umi"
-              desc="umi 是一个可扩展的企业级前端应用框架,umi 以路由为基础的，同时支持配置式路由和约定式路由，保证路由的功能完备，并以此进行功能扩展。"
-            />
-            <InfoCard
-              index={2}
-              title="了解 ant design"
-              href="https://ant.design"
-              desc="antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。"
-            />
-            <InfoCard
-              index={3}
-              title="了解 Pro Components"
-              href="https://procomponents.ant.design"
-              desc="ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。"
-            />
+            {
+              data?.map(item => {
+                return <InfoCard
+                  loading={loading}
+                  // 获取数组的下标
+                  index={data?.map(a => a).indexOf(item) + 1}
+                  key={item.id}
+                  // @ts-ignore
+                  title={item.name}
+                  // @ts-ignore
+                  id={item.id}
+                  // @ts-ignore
+                  desc={item.description}
+                />
+              })
+            }
           </div>
         </div>
+
+        <div style={{
+          marginTop: '20px',
+          float: 'right'
+        }}>
+          <Pagination
+            current={current}
+            defaultPageSize={5}
+            total={total}
+            onChange={onChangePage}
+          />
+        </div>
+
       </Card>
+
     </PageContainer>
   );
 };

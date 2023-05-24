@@ -18,6 +18,14 @@ export default [
     component: './Index',
   },
   {
+
+    path: 'interfaceInfo/detail/:id',
+    name: 'detail',
+    icon: 'home',
+    component: './Index/Detail',
+    hideInMenu: true, // 菜单项显示
+  },
+  {
     path: '/user',
     layout: false,
     routes: [

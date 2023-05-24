@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -77,6 +78,7 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
         interfaceInfo.setRequestHeader(dto.getRequestHeader());
         interfaceInfo.setResponseHeader(dto.getResponseHeader());
         interfaceInfo.setStatus(dto.getStatus());
+        interfaceInfo.setUpdateTime(new Date());
 
         return updateById(interfaceInfo);
     }

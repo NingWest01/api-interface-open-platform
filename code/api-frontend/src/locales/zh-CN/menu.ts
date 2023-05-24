@@ -3,8 +3,7 @@ export default {
   'menu.login': '登录',
   'menu.admin': '管理页',
   'menu.admin.interfaceInfo': '接口管理',
-
-
+  'menu.detail': '详情',
 
 
   'menu.welcome': '欢迎',
