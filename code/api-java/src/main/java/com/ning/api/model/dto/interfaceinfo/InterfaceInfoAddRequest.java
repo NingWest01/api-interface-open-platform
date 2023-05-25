@@ -41,6 +41,13 @@ public class InterfaceInfoAddRequest implements Serializable {
     private String method;
 
     /**
+     * 请求参数&类型
+     */
+    @ApiModelProperty("请求参数&类型")
+    @NotBlank(message = "请求参数&类型，不能为空")
+    private String requestParams;
+
+    /**
      * 请求头
      */
     @ApiModelProperty("请求头")

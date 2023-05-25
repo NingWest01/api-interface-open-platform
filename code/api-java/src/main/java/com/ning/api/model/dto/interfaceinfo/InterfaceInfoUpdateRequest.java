@@ -37,6 +37,14 @@ public class InterfaceInfoUpdateRequest implements Serializable {
     private String description;
 
     /**
+     * 请求参数&类型
+     */
+    @ApiModelProperty("请求参数&类型")
+    @NotBlank(message = "请求参数&类型，不能为空")
+    private String requestParams;
+
+
+    /**
      * 接口地址
      */
     @NotBlank(message = "接口地址，不能为空")

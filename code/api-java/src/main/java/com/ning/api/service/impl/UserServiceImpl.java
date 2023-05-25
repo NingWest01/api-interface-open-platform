@@ -2,6 +2,7 @@ package com.ning.api.service.impl;
 
 import static com.ning.api.constant.UserConstant.USER_LOGIN_STATE;
 
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,10 +17,12 @@ import com.ning.api.model.vo.LoginUserVO;
 import com.ning.api.model.vo.UserVO;
 import com.ning.api.service.UserService;
 import com.ning.api.utils.SqlUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +32,6 @@ import org.springframework.util.DigestUtils;
 
 /**
  * 用户服务实现
-
  */
 @Service
 @Slf4j
@@ -70,6 +72,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+
+            // 生成 ak、sk
+            String ak = CommonConstant.API_PRE + RandomUtil.randomString(6) + "." + RandomUtil.randomString(10);
+            String sk = CommonConstant.API_PRE + RandomUtil.randomString(10) + "." + RandomUtil.randomString(10);
+            // 放入 ak、sk
+            user.setAccessKey(ak);
+            user.setSecretKey(sk);
+
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");

@@ -66,6 +66,16 @@ public class User implements Serializable {
     private String userRole;
 
     /**
+     * ak
+     */
+    private String accessKey;
+
+    /**
+     * sk
+     */
+    private String secretKey;
+
+    /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

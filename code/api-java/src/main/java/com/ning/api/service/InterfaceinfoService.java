@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.ning.api.model.dto.interfaceinfo.InterfaceInvokeRequest;
 import com.ning.api.model.entity.InterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -43,4 +44,11 @@ public interface InterfaceinfoService extends IService<InterfaceInfo> {
      * @param id
      */
     void offlineInterfaceInfo(Long id);
+
+    /**
+     * 调用远程接口
+     * @param request
+     * @return
+     */
+    Object invoke(InterfaceInvokeRequest invokeRequest, HttpServletRequest request);
 }

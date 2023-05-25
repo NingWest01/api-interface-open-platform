@@ -126,6 +126,8 @@ declare namespace API {
     name?: string;
     /** 请求头 */
     requestHeader?: string;
+    /** 请求参数&类型 */
+    requestParams?: string;
     /** 响应头 */
     responseHeader?: string;
     /** 接口地址 */
@@ -148,6 +150,8 @@ declare namespace API {
     name?: string;
     /** 请求头 */
     requestHeader?: string;
+    /** 请求参数&类型 */
+    requestParams?: string;
     /** 响应头 */
     responseHeader?: string;
     /** 接口状态（0 关闭 1 开启） */
@@ -163,12 +167,22 @@ declare namespace API {
     method?: string;
     name?: string;
     requestHeader?: string;
+    requestParams?: string;
     responseHeader?: string;
     status?: number;
     updateTime?: string;
     url?: string;
     userId?: number;
     userName?: string;
+  };
+
+  type InterfaceInvokeRequest = {
+    /** id */
+    id?: number;
+    /** 请求参数&类型 */
+    requestParams?: string;
+    /** 接口地址 */
+    url?: string;
   };
 
   type listInterfaceInfoVOByPageUsingGETParams = {
@@ -396,10 +410,12 @@ declare namespace API {
   };
 
   type User = {
+    accessKey?: string;
     createTime?: string;
     id?: number;
     isDelete?: number;
     mpOpenId?: string;
+    secretKey?: string;
     unionId?: string;
     updateTime?: string;
     userAccount?: string;

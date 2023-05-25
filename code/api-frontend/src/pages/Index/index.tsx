@@ -210,6 +210,7 @@ const Index: React.FC = () => {
           float: 'right'
         }}>
           <Pagination
+            showTotal={(total) => `总条数： ${total}`}
             current={current}
             defaultPageSize={5}
             total={total}

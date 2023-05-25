@@ -22,4 +22,6 @@ public interface CommonConstant {
      */
     Integer ERROR_CODE = 500;
 
+    String API_PRE = "api.";
+
 }

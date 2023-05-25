@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.gson.Gson;
 import com.ning.api.common.BaseResponse;
 import com.ning.api.common.ErrorCode;
 import com.ning.api.constant.CommonConstant;
@@ -13,7 +14,9 @@ import com.ning.api.mapper.InterfaceinfoMapper;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.ning.api.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.ning.api.model.dto.interfaceinfo.InterfaceInvokeRequest;
 import com.ning.api.model.entity.InterfaceInfo;
+import com.ning.api.model.entity.Response;
 import com.ning.api.model.entity.User;
 import com.ning.api.service.InterfaceinfoService;
 import com.ning.api.service.UserService;
@@ -79,6 +82,7 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
         interfaceInfo.setResponseHeader(dto.getResponseHeader());
         interfaceInfo.setStatus(dto.getStatus());
         interfaceInfo.setUpdateTime(new Date());
+        interfaceInfo.setRequestParams(dto.getRequestParams());
 
         return updateById(interfaceInfo);
     }
@@ -165,6 +169,22 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
         if (!this.updateById(interfaceInfo)) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR);
         }
+    }
+
+    @Override
+    public Object invoke(InterfaceInvokeRequest invokeRequest, HttpServletRequest request) {
+        User loginUser = userService.getLoginUser(request);
+        if (StringUtils.isBlank(loginUser.getAccessKey()) || StringUtils.isBlank(loginUser.getSecretKey())) {
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR);
+        }
+        MyClient myClient = new MyClient(loginUser.getAccessKey(), loginUser.getSecretKey());
+        // 格式化数据
+        Gson gson = new Gson();
+        com.ning.sdk.model.User user = gson.fromJson(invokeRequest.getRequestParams(), com.ning.sdk.model.User.class);
+//        String url = invokeRequest.getUrl();  请求地址
+        // 发送请求 todo 有待改进
+        String resp = myClient.postJsonName(user);
+        return gson.fromJson(resp, Response.class);
     }
 }
 

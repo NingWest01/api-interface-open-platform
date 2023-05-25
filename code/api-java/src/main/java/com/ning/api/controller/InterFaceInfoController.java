@@ -8,17 +8,16 @@ import com.ning.api.common.ResultUtils;
 import com.ning.api.constant.UserConstant;
 import com.ning.api.exception.BusinessException;
 import com.ning.api.exception.ThrowUtils;
-import com.ning.api.model.dto.interfaceinfo.InterfaceInfoAddRequest;
-import com.ning.api.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.ning.api.model.dto.interfaceinfo.InterfaceInfoRequest;
-import com.ning.api.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.ning.api.model.dto.interfaceinfo.*;
 import com.ning.api.model.entity.InterfaceInfo;
+import com.ning.api.model.entity.User;
 import com.ning.api.model.vo.InterfaceInfoVo;
 import com.ning.api.model.vo.PageVo;
 import com.ning.api.service.InterfaceinfoService;
 import com.ning.api.service.UserService;
 import com.ning.api.utils.BeanCopyUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +37,19 @@ public class InterFaceInfoController {
     private InterfaceinfoService interfaceInfoService;
 
 
-    @Resource
-    private UserService userService;
+
+    /**
+     * 调用SDK接口
+     *
+     * @return
+     */
+    @PostMapping("/invoke")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInvokeRequest invokeRequest, HttpServletRequest request) {
+        Object info = interfaceInfoService.invoke(invokeRequest,request);
+        // 查询接口信息
+        return ResultUtils.success(info);
+    }
 
 
     /**
@@ -63,7 +73,6 @@ public class InterFaceInfoController {
         interfaceInfoService.offlineInterfaceInfo(dto.getId());
         return ResultUtils.success();
     }
-
 
 
     // region 增删改查
