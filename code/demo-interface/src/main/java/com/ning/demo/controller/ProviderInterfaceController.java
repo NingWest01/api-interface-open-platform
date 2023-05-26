@@ -1,16 +1,11 @@
 package com.ning.demo.controller;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
-import com.ning.demo.constant.Constant;
 import com.ning.demo.core.CheckCore;
 import com.ning.sdk.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

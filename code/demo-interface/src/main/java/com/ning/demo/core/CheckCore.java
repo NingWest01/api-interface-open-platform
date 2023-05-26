@@ -8,6 +8,7 @@ import com.ning.sdk.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author NingWest
@@ -44,7 +45,7 @@ public class CheckCore {
 
         // todo 此处的 secretKey 应该是从数据库获取
         String newSign = Md5Utils.md5(user + "abcdefg" + accessKey);
-        if (!newSign.equals(sign)) {
+        if (!Objects.equals(newSign, sign)) {
             return false;
         }
 

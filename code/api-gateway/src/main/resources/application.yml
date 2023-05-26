@@ -1,0 +1,28 @@
+server:
+  port: 8090
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: ning-api
+          uri: http://localhost:8103
+          predicates:
+            - Path=/api/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: fetchIngredients
+                fallbackUri: forward:/fallback
+        - id: ning-fallback
+          uri: https://yupi.icu
+          predicates:
+            - Path=/fallback
+
+# 为了看清楚 gateway 的日志，修改他的日志级别
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
