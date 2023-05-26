@@ -173,6 +173,16 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
 
     @Override
     public Object invoke(InterfaceInvokeRequest invokeRequest, HttpServletRequest request) {
+        InterfaceInfo interfaceInfo = interfaceinfoMapper.selectById(invokeRequest.getId());
+
+        if(Objects.isNull(interfaceInfo)){
+            throw new BusinessException(ErrorCode.NO_HAVE_ERROR);
+        }
+
+        if(!Objects.equals(interfaceInfo.getStatus(), CommonConstant.STATUS_SUCCESS)){
+            throw new BusinessException(ErrorCode.STATUS_ERROR);
+        }
+
         User loginUser = userService.getLoginUser(request);
         if (StringUtils.isBlank(loginUser.getAccessKey()) || StringUtils.isBlank(loginUser.getSecretKey())) {
             throw new BusinessException(ErrorCode.PARAMETER_ERROR);

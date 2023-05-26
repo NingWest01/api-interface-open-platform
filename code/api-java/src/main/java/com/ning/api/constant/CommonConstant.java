@@ -1,7 +1,5 @@
 package com.ning.api.constant;
 
-import co.elastic.clients.elasticsearch.nodes.Ingest;
-
 /**
  * 通用常量
  */
@@ -16,6 +14,11 @@ public interface CommonConstant {
      * 降序
      */
     String SORT_ORDER_DESC = " descend";
+
+    /**
+     * 降序
+     */
+    Integer STATUS_SUCCESS = 1;
 
     /**
      * 错误响应码

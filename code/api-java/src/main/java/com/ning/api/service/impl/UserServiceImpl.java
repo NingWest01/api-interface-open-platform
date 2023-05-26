@@ -72,6 +72,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            // 放入默认信息
+            user.setUserAvatar("http://152.136.145.117:9000/my.bs/pic1.gif");
+            user.setUserName("亲~这是默认昵称");
 
             // 生成 ak、sk
             String ak = CommonConstant.API_PRE + RandomUtil.randomString(6) + "." + RandomUtil.randomString(10);

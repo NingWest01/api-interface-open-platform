@@ -30,7 +30,7 @@ const Index: React.FC = () => {
     try {
       // @ts-ignore
       let result = await getInterfaceInfoVOByIdUsingGET({id: urlId?.id})
-      if (result?.message === 'ok') {
+      if (result?.msg === 'ok') {
         // @ts-ignore
         setInfo(result?.data)
         setLoading(false)
@@ -73,16 +73,20 @@ const Index: React.FC = () => {
       requestParams: params,
       url: info.url
     })
-    let {code, data} = result;
+    let {code, data, msg} = result;
     if (code === 0) {
       message.success("发送请求成功")
       // @ts-ignore
       setDataInfo(data?.data)
-      setTimeout(() => {
-        // 请求成功，骨架平隐藏
-        setResLoading(false)
-      }, 200)
+    } else {
+      message.error("发送请求失败")
+      setDataInfo(msg)
     }
+    // 骨架屏关闭 时间长一点 ！ 效果好看
+    setTimeout(() => {
+      // 请求成功，骨架平隐藏
+      setResLoading(false)
+    }, 200)
   };
 
 

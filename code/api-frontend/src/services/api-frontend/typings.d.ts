@@ -2,79 +2,79 @@ declare namespace API {
   type BaseResponseboolean = {
     code?: number;
     data?: boolean;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseint = {
     code?: number;
     data?: number;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseInterfaceInfoVo = {
     code?: number;
     data?: InterfaceInfoVo;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseLoginUserVO = {
     code?: number;
     data?: LoginUserVO;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponselong = {
     code?: number;
     data?: number;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsePagePostVO = {
     code?: number;
     data?: PagePostVO;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsePageUser = {
     code?: number;
     data?: PageUser;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsePageUserVO = {
     code?: number;
     data?: PageUserVO;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsePageVo = {
     code?: number;
     data?: PageVo;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsePostVO = {
     code?: number;
     data?: PostVO;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsestring = {
     code?: number;
     data?: string;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseUser = {
     code?: number;
     data?: User;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseUserVO = {
     code?: number;
     data?: UserVO;
-    message?: string;
+    msg?: string;
   };
 
   type checkUsingGETParams = {

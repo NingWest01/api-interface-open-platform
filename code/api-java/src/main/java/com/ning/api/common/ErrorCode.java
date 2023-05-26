@@ -15,6 +15,9 @@ public enum ErrorCode {
     PARAMETER_ERROR(50002, "参数错误"),
     NO_HAVE_ERROR(50003, "对象不存在"),
     NO_RETURN_ERROR(50004, "错误返回，接口调用失败"),
+    STATUS_ERROR(50006, "接口状态信息异常"),
+
+    REQUEST_EXHAUSTION(50007, "接口请求次数耗尽"),
     OPERATION_ERROR(50001, "操作失败");
 
 
