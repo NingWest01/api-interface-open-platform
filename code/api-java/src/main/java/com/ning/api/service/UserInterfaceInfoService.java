@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
 
     /**
-     * 增加调用次数
+     * 减少调用次数
      *
      * @param userInterFaceId 服务的接口id
      * @param request         请求

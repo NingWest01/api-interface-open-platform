@@ -42,16 +42,16 @@ public class ProviderInterfaceController {
     public Map<String, Object> getUserName(@RequestBody User user, HttpServletRequest request) {
 
         // 校验签名的正确性
-        boolean isCheck = CheckCore.checkParams(user, request);
+//        boolean isCheck = CheckCore.checkParams(user, request);
 
         Map<String, Object> data = new HashMap<>();
 
-        if (!isCheck) {
-            data.put("code", 500);
-            data.put("msg", "ERROR");
-            data.put("data", "ERROR 错误信息返回");
-            return data;
-        }
+//        if (!isCheck) {
+//            data.put("code", 500);
+//            data.put("msg", "ERROR");
+//            data.put("data", "ERROR 错误信息返回");
+//            return data;
+//        }
 
         data.put("code", 200);
         data.put("msg", "POST");

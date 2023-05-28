@@ -29,6 +29,8 @@ public class SignUtils {
         // 随机数
         map.put(Constant.NONCE, RandomUtil.randomString(5));
 
+        map.put(Constant.DATA, parma.toString());
+
         return map;
     }
 }

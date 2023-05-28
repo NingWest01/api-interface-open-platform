@@ -1,4 +1,4 @@
-package com.ning.sdk.constant;
+package com.ning.api.constant;
 
 /**
  * @author NingWest

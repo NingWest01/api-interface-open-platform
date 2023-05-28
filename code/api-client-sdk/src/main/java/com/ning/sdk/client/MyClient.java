@@ -14,6 +14,8 @@ import java.util.HashMap;
  */
 public class MyClient {
 
+    public static final String HOST = "http://localhost:8090";
+
     private String accessKey;
 
     private String secretKey;
@@ -32,7 +34,7 @@ public class MyClient {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", "123");
 
-        String result = HttpUtil.get("http://localhost:8103/api/demo", paramMap);
+        String result = HttpUtil.get(HOST + "/api/demo", paramMap);
         System.out.println(result);
         return result;
     }
@@ -43,7 +45,7 @@ public class MyClient {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", "123");
 
-        String result = HttpUtil.post("http://localhost:8103/api/demo", paramMap);
+        String result = HttpUtil.post(HOST + "/api/demo", paramMap);
         System.out.println(result);
         return result;
     }
@@ -52,7 +54,7 @@ public class MyClient {
 
         String jsonStr = JSONUtil.toJsonStr(user);
         return
-                HttpRequest.post("http://localhost:8103/api/demo/user")
+                HttpRequest.post(HOST + "/api/demo/user")
                         .addHeaders(SignUtils.getHeader(accessKey, secretKey, user))
                         .body(jsonStr)
                         .execute()

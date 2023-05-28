@@ -1,6 +1,14 @@
 server:
   port: 8090
 
+
+my:
+  whiteList:
+    - "127.0.0.1"
+    - "localhost"
+    - "0:0:0:0:0:0:0:1"
+
+
 spring:
   cloud:
     gateway:
@@ -9,15 +17,15 @@ spring:
           uri: http://localhost:8103
           predicates:
             - Path=/api/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: fetchIngredients
-                fallbackUri: forward:/fallback
-        - id: ning-fallback
-          uri: https://yupi.icu
-          predicates:
-            - Path=/fallback
+#          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: fetchIngredients
+#                fallbackUri: forward:/fallback
+#        - id: ning-fallback
+#          uri: https://yupi.icu
+#          predicates:
+#            - Path=/fallback
 
 # 为了看清楚 gateway 的日志，修改他的日志级别
 logging:

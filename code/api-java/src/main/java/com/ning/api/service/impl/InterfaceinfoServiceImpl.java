@@ -175,11 +175,11 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
     public Object invoke(InterfaceInvokeRequest invokeRequest, HttpServletRequest request) {
         InterfaceInfo interfaceInfo = interfaceinfoMapper.selectById(invokeRequest.getId());
 
-        if(Objects.isNull(interfaceInfo)){
+        if (Objects.isNull(interfaceInfo)) {
             throw new BusinessException(ErrorCode.NO_HAVE_ERROR);
         }
 
-        if(!Objects.equals(interfaceInfo.getStatus(), CommonConstant.STATUS_SUCCESS)){
+        if (!Objects.equals(interfaceInfo.getStatus(), CommonConstant.STATUS_SUCCESS)) {
             throw new BusinessException(ErrorCode.STATUS_ERROR);
         }
 
@@ -194,7 +194,10 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
 //        String url = invokeRequest.getUrl();  请求地址
         // 发送请求 todo 有待改进
         String resp = myClient.postJsonName(user);
-        return gson.fromJson(resp, Response.class);
+        if (resp.contains("code")) {
+            return gson.fromJson(resp, Response.class);
+        }
+        return resp;
     }
 }
 

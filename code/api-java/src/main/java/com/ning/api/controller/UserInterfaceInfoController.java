@@ -68,9 +68,9 @@ public class UserInterfaceInfoController {
     }
 
     /**
-     * 修改
+     * 减少调用次数
      */
-    @PutMapping("/minusOne")
+    @GetMapping("/minusOne")
     public BaseResponse<String> minusOne(@RequestParam("userInterFaceId") Long userInterFaceId, HttpServletRequest request) {
 
         userInterfaceInfoService.minusOne(userInterFaceId, request);
