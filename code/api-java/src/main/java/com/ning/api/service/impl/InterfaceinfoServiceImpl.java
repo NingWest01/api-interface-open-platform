@@ -92,16 +92,14 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
     public Page<InterfaceInfo> selectPage(InterfaceInfoQueryRequest dto) {
         Page<InterfaceInfo> interfaceInfoPage = new Page<>(dto.getCurrent(), dto.getPageSize());
         QueryWrapper<InterfaceInfo> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(dto.getKeyword())) {
-            wrapper.lambda()
-                    .like(InterfaceInfo::getName, dto.getKeyword())
-                    .or()
-                    .like(InterfaceInfo::getDescription, dto.getKeyword())
-                    .or()
-                    .like(InterfaceInfo::getMethod, dto.getKeyword())
-                    .or()
-                    .like(InterfaceInfo::getUserName, dto.getKeyword());
-        }
+
+        wrapper.lambda()
+                .eq(StringUtils.isNotBlank(dto.getName()), InterfaceInfo::getName, dto.getName())
+                .or()
+                .eq(StringUtils.isNotBlank(dto.getMethod()), InterfaceInfo::getMethod, dto.getMethod())
+                .or()
+                .eq(StringUtils.isNotBlank(dto.getUserName()), InterfaceInfo::getUserName, dto.getUserName());
+
         // 状态信息
         if (dto.getStatus() != null && dto.getStatus() >= 0 && dto.getStatus() <= 1) {
             wrapper.lambda().eq(InterfaceInfo::getStatus, dto.getStatus());

@@ -30,7 +30,6 @@ const TableList: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [setSelectedRows] = useState<API.RuleListItem[]>([]);
 
 
   /**
@@ -163,6 +162,7 @@ const TableList: React.FC = () => {
     },
     {
       title: "url",
+      hideInSearch:true,
       dataIndex: 'url',
       valueType: 'textarea',
     },
@@ -170,6 +170,20 @@ const TableList: React.FC = () => {
       title: "请求类型",
       dataIndex: 'method',
       valueType: 'text',
+      valueEnum: {
+        "GET": {
+          text: "GET",
+        },
+        "POST": {
+          text: "POST",
+        },
+        "PUT": {
+          text: "PUT",
+        },
+        "DELETE": {
+          text: "DELETE",
+        }
+      },
     },
     {
       title: "创建人",
@@ -178,21 +192,25 @@ const TableList: React.FC = () => {
     },
     {
       title: "请求参数",
+      hideInSearch:true,
       dataIndex: 'requestParams',
       valueType: 'jsonCode',
     },
     {
       title: "响应头",
+      hideInSearch:true,
       dataIndex: 'responseHeader',
       valueType: 'jsonCode',
     },
     {
       title: "请求头",
+      hideInSearch:true,
       dataIndex: 'requestHeader',
       valueType: 'jsonCode',
     },
     {
       title: "接口描述",
+      hideInSearch:true,
       dataIndex: 'description',
       valueType: 'textarea',
     },
@@ -213,6 +231,7 @@ const TableList: React.FC = () => {
     },
     {
       title: "创建时间",
+      hideInSearch:true,
       dataIndex: 'createTime',
       valueType: 'dateTime',
       hideInForm: true
@@ -306,12 +325,6 @@ const TableList: React.FC = () => {
           }
         }}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            // @ts-ignore
-            setSelectedRows(selectedRows);
-          },
-        }}
       />
       <CreateForm
         open={createModalOpen}

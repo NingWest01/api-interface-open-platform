@@ -4,8 +4,10 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.ning.api.constant.Constant;
+import com.ning.api.service.DemoService;
 import com.ning.api.utils.Md5Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -36,6 +38,9 @@ import java.util.*;
 @ConfigurationProperties(prefix = "my")
 public class MyGlobalFilter implements GlobalFilter, Ordered {
 
+    @DubboReference
+    private DemoService demoService;
+
     /*-- 获取配置文件中的集合  方便设置白名单 --*/
     private List<String> whiteList;
 
@@ -50,6 +55,10 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
     /*-- 结束 --*/
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+
+        String s = demoService.sayHello("123");
+        System.out.println(s);
+
         //1. 请求日志
         ServerHttpRequest request = exchange.getRequest();
         log.info("请求地址：[{}]", request.getPath().value());
@@ -99,11 +108,6 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
                                     fluxBody.map(dataBuffer -> {
                                         try {
                                             // 7. 调用成功，接口调用次数 + 1 invokeCount
-                                            Map<String, Object> params = new HashMap<>();
-                                            params.put("userInterFaceId", 14);
-                                            // 相应结果
-                                            String result = HttpUtil.get("http://localhost:8102/userInterfaceInfo/minusOne", params);
-                                            System.out.println(result);
 
                                         } catch (Exception e) {
                                             log.error("invokeCount error", e);

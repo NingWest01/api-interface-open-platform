@@ -14,12 +14,27 @@ import java.io.Serializable;
 public class InterfaceInfoQueryRequest extends PageRequest implements Serializable {
 
     /**
-     * 关键字
+     * 接口名称
      */
-    private String keyword;
+    private String name;
 
     /**
-     * 接口状态（0 关闭  1 开启）
+     * 请求类型
+     */
+    private String method;
+
+    /**
+     * 接口状态（0 关闭 1 开启）
      */
     private Integer status;
+
+    /**
+     * 创建人id
+     */
+    private Long userId;
+
+    /**
+     * 创建人姓名
+     */
+    private String userName;
 }

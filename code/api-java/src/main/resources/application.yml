@@ -1,3 +1,22 @@
+# 更换为 nacos 为注册中心
+dubbo:
+  application:
+    name: api-interface-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848
+
+## dubbo
+#dubbo:
+#  application:
+#    name: api-interface-provider
+#  protocol:
+#    name: dubbo
+#    port: -1
+#  registry:
+#    address: zookeeper://127.0.0.1:2181
 # 第三方服务的 密钥、密匙
 # 配置
 api:
