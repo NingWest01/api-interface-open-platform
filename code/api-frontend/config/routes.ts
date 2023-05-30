@@ -47,6 +47,12 @@ export default [
         icon: 'table',
         path: '/admin/interface_info',
         component: './Admin/InterFaceInfo',
+      },
+      {
+        name: 'analysis',
+        icon: 'table',
+        path: '/admin/analysis',
+        component: './Admin/Analysis',
       }
     ],
   },

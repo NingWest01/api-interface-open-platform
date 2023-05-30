@@ -11,6 +11,7 @@ import com.ning.api.model.dto.userInterfaceInfo.UserInterfaceInfoRequest;
 import com.ning.api.model.entity.InterfaceInfo;
 import com.ning.api.model.entity.User;
 import com.ning.api.model.entity.UserInterfaceInfo;
+import com.ning.api.model.vo.AnalysisVo;
 import com.ning.api.service.InterfaceinfoService;
 import com.ning.api.service.UserInterfaceInfoService;
 import com.ning.api.mapper.UserInterfaceInfoMapper;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author W1323
@@ -81,6 +84,21 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
         wrapper.lambda().orderByDesc(UserInterfaceInfo::getCreateTime);
 
         return userInterfaceInfoMapper.selectPage(interfaceInfoPage, wrapper);
+    }
+
+    @Override
+    public List<AnalysisVo> analysisInfo() {
+        List<UserInterfaceInfo> info = userInterfaceInfoMapper.analysisInfo();
+        return info.stream().map(item -> {
+            AnalysisVo analysisVo = new AnalysisVo();
+            Long interfaceinfoId = item.getInterfaceinfoId();
+            InterfaceInfo interfaceInfo = interfaceinfoService.getById(interfaceinfoId);
+            if (!Objects.isNull(interfaceInfo)) {
+                analysisVo.setName(interfaceInfo.getName());
+            }
+            analysisVo.setValue(item.getTotalNum());
+            return analysisVo;
+        }).collect(Collectors.toList());
     }
 
 

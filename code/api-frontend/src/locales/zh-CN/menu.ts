@@ -4,6 +4,7 @@ export default {
   'menu.admin': '管理页',
   'menu.admin.interfaceInfo': '接口管理',
   'menu.detail': '详情',
+  'menu.admin.analysis': '图表分析',
 
 
   'menu.welcome': '欢迎',

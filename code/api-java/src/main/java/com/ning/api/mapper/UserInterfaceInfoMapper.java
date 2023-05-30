@@ -2,6 +2,9 @@ package com.ning.api.mapper;
 
 import com.ning.api.model.entity.UserInterfaceInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ning.api.model.vo.AnalysisVo;
+
+import java.util.List;
 
 /**
 * @author W1323
@@ -11,6 +14,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface UserInterfaceInfoMapper extends BaseMapper<UserInterfaceInfo> {
 
+    /**
+     * 数据图表分析
+     * @return
+     */
+    List<UserInterfaceInfo> analysisInfo();
 }
 
 

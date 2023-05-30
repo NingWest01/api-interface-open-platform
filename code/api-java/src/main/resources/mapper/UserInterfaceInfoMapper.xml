@@ -21,4 +21,12 @@
         total_num,left_num,status,
         create_time,update_time,is_delete
     </sql>
+
+    <select id="analysisInfo" resultType="com.ning.api.model.entity.UserInterfaceInfo">
+        SELECT interfaceInfoId, sum(totalNum) as totalNum
+        FROM `user_interface_info`
+        GROUP BY interfaceInfoId
+        ORDER BY totalNum DESC
+        LIMIT 10
+    </select>
 </mapper>

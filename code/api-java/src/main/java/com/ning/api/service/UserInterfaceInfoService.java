@@ -7,8 +7,10 @@ import com.ning.api.model.dto.userInterfaceInfo.UserInterfaceInfoRequest;
 import com.ning.api.model.entity.InterfaceInfo;
 import com.ning.api.model.entity.UserInterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ning.api.model.vo.AnalysisVo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author W1323
@@ -43,4 +45,9 @@ public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
      * 分页查询
      */
     Page<UserInterfaceInfo> selectPage(UserInterfaceInfoRequest dto);
+
+    /**
+     * 接口图像化分析
+     */
+    List<AnalysisVo> analysisInfo();
 }

@@ -13,6 +13,7 @@ import com.ning.api.model.dto.userInterfaceInfo.UserInterfaceInfoRequest;
 import com.ning.api.model.entity.InterfaceInfo;
 import com.ning.api.model.entity.User;
 import com.ning.api.model.entity.UserInterfaceInfo;
+import com.ning.api.model.vo.AnalysisVo;
 import com.ning.api.model.vo.PageVo;
 import com.ning.api.service.InterfaceinfoService;
 import com.ning.api.service.UserInterfaceInfoService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 用户调用接口
@@ -41,6 +43,18 @@ public class UserInterfaceInfoController {
 
     @Resource
     private InterfaceinfoService interfaceinfoService;
+
+
+    /**
+     * 图表接口
+     */
+    @GetMapping("/analysis")
+    public BaseResponse<List<AnalysisVo>> analysisInfo() {
+
+        List<AnalysisVo> data = userInterfaceInfoService.analysisInfo();
+
+        return ResultUtils.success(data);
+    }
 
 
     // region 增删改查
