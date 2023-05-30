@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -55,6 +56,15 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
 
         // 获取信息
         InterfaceInfo interfaceInfo = BeanCopyUtil.copyBean(addRequest, InterfaceInfo.class);
+
+        // 判断是否重复加入
+        QueryWrapper<InterfaceInfo> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(InterfaceInfo::getMethod, addRequest.getMethod()).like(InterfaceInfo::getUrl, addRequest.getUrl());
+
+        List<InterfaceInfo> list = this.list(wrapper);
+        if (!list.isEmpty()) {
+            throw new BusinessException(ErrorCode.OBJECT_IS_HAVE);
+        }
 
         // 使用用户的账户
         interfaceInfo.setUserName(loginUser.getUserAccount());
@@ -112,7 +122,7 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
     }
 
     @Override
-    public void onlineInterfaceInfo(Long id) {
+    public void onlineInterfaceInfo(Long id, HttpServletRequest request) {
         InterfaceInfo interfaceInfo = this.getById(id);
 
         if (Objects.isNull(interfaceInfo)) {
@@ -127,7 +137,15 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
         com.ning.sdk.model.User user = new com.ning.sdk.model.User();
         user.setName("ning test");
 
-        String result = apiClient.postJsonName(user);
+        // 填写请求实体
+        com.ning.sdk.model.InterfaceInfo sdkInterfaceInfo = new com.ning.sdk.model.InterfaceInfo();
+        sdkInterfaceInfo.setId(interfaceInfo.getId());
+        sdkInterfaceInfo.setUrl(interfaceInfo.getUrl());
+        // 登录人的id
+        User loginUser = userService.getLoginUser(request);
+        sdkInterfaceInfo.setUserId(loginUser.getId());
+
+        String result = apiClient.postJsonName(sdkInterfaceInfo, user);
         if (StringUtils.isBlank(result)) {
             throw new BusinessException(ErrorCode.PARAMETER_ERROR);
         }
@@ -189,9 +207,15 @@ public class InterfaceinfoServiceImpl extends ServiceImpl<InterfaceinfoMapper, I
         // 格式化数据
         Gson gson = new Gson();
         com.ning.sdk.model.User user = gson.fromJson(invokeRequest.getRequestParams(), com.ning.sdk.model.User.class);
-//        String url = invokeRequest.getUrl();  请求地址
-        // 发送请求 todo 有待改进
-        String resp = myClient.postJsonName(user);
+        // 发送请求
+        // 填写 请求实体
+        com.ning.sdk.model.InterfaceInfo sdkInterfaceInfo = new com.ning.sdk.model.InterfaceInfo();
+
+        sdkInterfaceInfo.setId(interfaceInfo.getId());
+        sdkInterfaceInfo.setUrl(interfaceInfo.getUrl());
+        sdkInterfaceInfo.setUserId(loginUser.getId());
+
+        String resp = myClient.postJsonName(sdkInterfaceInfo, user);
         if (resp.contains("code")) {
             return gson.fromJson(resp, Response.class);
         }

@@ -37,7 +37,7 @@ public interface InterfaceinfoService extends IService<InterfaceInfo> {
      * 上线接口
      * @param id  id
      */
-    void onlineInterfaceInfo(Long id);
+    void onlineInterfaceInfo(Long id,HttpServletRequest request);
 
     /**
      * 下线接口

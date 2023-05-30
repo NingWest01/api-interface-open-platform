@@ -2,9 +2,9 @@ package com.ning.api.filter;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
 import com.ning.api.constant.Constant;
-import com.ning.api.service.DemoService;
+import com.ning.api.service.UserGatewayService;
+import com.ning.api.service.UserInterfaceGatewayService;
 import com.ning.api.utils.Md5Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -17,6 +17,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -39,7 +40,10 @@ import java.util.*;
 public class MyGlobalFilter implements GlobalFilter, Ordered {
 
     @DubboReference
-    private DemoService demoService;
+    private UserGatewayService userGatewayService;
+
+    @DubboReference
+    private UserInterfaceGatewayService userInterfaceGatewayService;
 
     /*-- 获取配置文件中的集合  方便设置白名单 --*/
     private List<String> whiteList;
@@ -51,13 +55,12 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
     public void setWhiteList(List<String> whiteList) {
         this.whiteList = whiteList;
     }
-
     /*-- 结束 --*/
+
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
-        String s = demoService.sayHello("123");
-        System.out.println(s);
 
         //1. 请求日志
         ServerHttpRequest request = exchange.getRequest();
@@ -80,13 +83,27 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
             // 返回
             return response.setComplete();
         }
-        return handleResponse(exchange, chain);
+        HttpHeaders headers = request.getHeaders();
+        // 用户id
+        String userId = headers.getFirst(Constant.USER_ID);
+        // 接口id
+        String interfaceId = headers.getFirst(Constant.INTERFACE_ID);
+        // 判断是否有请求接口的资格
+        Object info = userInterfaceGatewayService.interfaceInfo(Long.parseLong(Objects.requireNonNull(interfaceId)), Long.parseLong(Objects.requireNonNull(userId)));
+
+        if(Objects.isNull(info)){
+            response.setStatusCode(HttpStatus.FORBIDDEN);
+            // 返回
+            return response.setComplete();
+        }
+        return handleResponse(exchange, chain, userId, interfaceId);
     }
 
     /**
      * 处理响应
      */
-    public Mono<Void> handleResponse(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> handleResponse(ServerWebExchange exchange, GatewayFilterChain chain, String userId, String interfaceId) {
+
         try {
             ServerHttpResponse originalResponse = exchange.getResponse();
             // 缓存数据的工厂
@@ -105,12 +122,19 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
                             // 往返回值里写数据
                             // 拼接字符串
                             return super.writeWith(
-                                    fluxBody.map(dataBuffer -> {
+                                    fluxBody.handle((dataBuffer, sink) -> {
                                         try {
                                             // 7. 调用成功，接口调用次数 + 1 invokeCount
-
+                                            boolean isOk = userInterfaceGatewayService.minusOne(Long.parseLong(interfaceId), Long.parseLong(userId));
+                                            if (isOk) {
+                                                log.info("接口调用次数 + 1 成功");
+                                            } else {
+                                                log.error("接口调用次数 + 1 失败");
+                                                handleNoAuth(originalResponse);
+                                            }
                                         } catch (Exception e) {
-                                            log.error("invokeCount error", e);
+                                            log.error("接口调用次数 + 1 报错");
+                                            handleNoAuth(originalResponse);
                                         }
                                         byte[] content = new byte[dataBuffer.readableByteCount()];
                                         dataBuffer.read(content);
@@ -123,7 +147,7 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
                                         sb2.append(data);
                                         // 打印日志
                                         log.info("响应结果：" + data);
-                                        return bufferFactory.wrap(content);
+                                        sink.next(bufferFactory.wrap(content));
                                     }));
                         } else {
                             // 8. 调用失败，返回一个规范的错误码
@@ -171,20 +195,36 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
                 return false;
             }
         }
-        // todo nonce  此处的随机数 可以在生成的时候存入 redis 并携带过来唯一的UUID 根据 request获取
+        //  nonce  此处的随机数 可以在生成的时候存入 redis 并携带过来唯一的UUID 根据 request获取
         if (StrUtil.isBlank(nonce)) {
             return false;
         }
+        // 远程请求数据
+        HashMap<String, String> userInfo = (HashMap<String, String>) userGatewayService.akSKGetUser(accessKey);
 
-        // todo 此处的 secretKey 应该是从数据库获取
-        String newSign = Md5Utils.md5(params + "abcdefg" + accessKey);
+        //  此处的 secretKey 应该是从数据库获取
+        String newSign = Md5Utils.md5(params + userInfo.get("secretKey") + accessKey);
         if (!Objects.equals(newSign, sign)) {
             return false;
         }
-
         // 最终无异常返回
         return true;
     }
+
+
+    /**
+     * 无权限
+     */
+    public Mono<Void> handleNoAuth(ServerHttpResponse response) {
+        response.setStatusCode(HttpStatus.FORBIDDEN);
+        return response.setComplete();
+    }
+
+    public Mono<Void> handleInvokeError(ServerHttpResponse response) {
+        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+        return response.setComplete();
+    }
+
 
     @Override
     public int getOrder() {

@@ -3,6 +3,7 @@ package com.ning.sdk.client;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
+import com.ning.sdk.model.InterfaceInfo;
 import com.ning.sdk.model.User;
 import com.ning.sdk.utils.SignUtils;
 
@@ -50,26 +51,17 @@ public class MyClient {
         return result;
     }
 
-    public String postJsonName(User user) {
+    public String postJsonName(InterfaceInfo requestParams, User user) {
 
         String jsonStr = JSONUtil.toJsonStr(user);
         return
-                HttpRequest.post(HOST + "/api/demo/user")
-                        .addHeaders(SignUtils.getHeader(accessKey, secretKey, user))
+                HttpRequest.post(requestParams.getUrl())
+                        .addHeaders(SignUtils.getHeader(requestParams,accessKey, secretKey, user))
                         .body(jsonStr)
                         .execute()
                         .body();
     }
 
 
-    public static void main(String[] args) {
-        MyClient myClient = new MyClient("ning", "abcdefg");
-        User user = new User();
-        user.setName("宁西");
-        String jsonUser = myClient.postJsonName(user);
-        System.out.println(jsonUser);
-
-
-    }
 
 }

@@ -48,9 +48,9 @@ spring:
 #            - Path=/fallback
 
 # 为了看清楚 gateway 的日志，修改他的日志级别
-logging:
-  level:
-    org:
-      springframework:
-        cloud:
-          gateway: trace
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        cloud:
+#          gateway: trace

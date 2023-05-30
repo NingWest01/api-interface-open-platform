@@ -75,9 +75,13 @@ const Index: React.FC = () => {
     })
     let {code, data, msg} = result;
     if (code === 0) {
-      message.success("发送请求成功")
       // @ts-ignore
       if (data?.data === undefined) {
+        if (data?.indexOf("Error") === -1) {
+          message.success("发送请求成功")
+        } else {
+          message.error("发送请求失败")
+        }
         setDataInfo(data)
       } else {
         // @ts-ignore

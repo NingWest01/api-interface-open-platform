@@ -98,6 +98,15 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
             throw new BusinessException(ErrorCode.NO_HAVE_ERROR);
         }
 
+        QueryWrapper<UserInterfaceInfo> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UserInterfaceInfo::getUserId, loginUser.getId()).eq(UserInterfaceInfo::getInterfaceinfoId, interfaceInfo.getId());
+        UserInterfaceInfo userInterfaceInfoOld = userInterfaceInfoMapper.selectOne(wrapper);
+
+        // 如果已存在不可再添加
+        if (!Objects.isNull(userInterfaceInfoOld)) {
+            throw new BusinessException(ErrorCode.OBJECT_IS_HAVE);
+        }
+
         UserInterfaceInfo userInterfaceInfo = new UserInterfaceInfo();
         userInterfaceInfo.setUserId(loginUser.getId());
         userInterfaceInfo.setInterfaceinfoId(interfaceInfo.getId());

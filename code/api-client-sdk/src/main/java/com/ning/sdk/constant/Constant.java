@@ -18,5 +18,9 @@ public interface Constant {
 
     String DATA = "params";
 
+    String INTERFACE_ID = "interfaceId";
+
+    String USER_ID = "userId";
+
 
 }

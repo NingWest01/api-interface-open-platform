@@ -13,11 +13,11 @@ public enum ErrorCode {
     FORBIDDEN_ERROR(40300, "禁止访问"),
     SYSTEM_ERROR(50000, "系统内部异常"),
     PARAMETER_ERROR(50002, "参数错误"),
-    NO_HAVE_ERROR(50003, "对象不存在"),
+    NO_HAVE_ERROR(50003, "信息不存在"),
     NO_RETURN_ERROR(50004, "错误返回，接口调用失败"),
     STATUS_ERROR(50006, "接口状态信息异常"),
-
     REQUEST_EXHAUSTION(50007, "接口请求次数耗尽"),
+    OBJECT_IS_HAVE(50008, "信息已经存在"),
     OPERATION_ERROR(50001, "操作失败");
 
 

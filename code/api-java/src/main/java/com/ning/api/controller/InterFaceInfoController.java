@@ -37,7 +37,6 @@ public class InterFaceInfoController {
     private InterfaceinfoService interfaceInfoService;
 
 
-
     /**
      * 调用SDK接口
      *
@@ -46,7 +45,7 @@ public class InterFaceInfoController {
     @PostMapping("/invoke")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInvokeRequest invokeRequest, HttpServletRequest request) {
-        Object info = interfaceInfoService.invoke(invokeRequest,request);
+        Object info = interfaceInfoService.invoke(invokeRequest, request);
         // 查询接口信息
         return ResultUtils.success(info);
     }
@@ -57,9 +56,9 @@ public class InterFaceInfoController {
      */
     @PostMapping("/online")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> onlineInterfaceInfo(@Validated @RequestBody InterfaceInfoRequest dto) {
+    public BaseResponse<Boolean> onlineInterfaceInfo(@Validated @RequestBody InterfaceInfoRequest dto, HttpServletRequest request) {
         // 查询接口信息
-        interfaceInfoService.onlineInterfaceInfo(dto.getId());
+        interfaceInfoService.onlineInterfaceInfo(dto.getId(), request);
         return ResultUtils.success();
     }
 

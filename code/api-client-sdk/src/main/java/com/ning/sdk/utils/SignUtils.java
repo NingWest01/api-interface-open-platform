@@ -2,6 +2,7 @@ package com.ning.sdk.utils;
 
 import cn.hutool.core.util.RandomUtil;
 import com.ning.sdk.constant.Constant;
+import com.ning.sdk.model.InterfaceInfo;
 import com.ning.sdk.model.User;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class SignUtils {
 
     // 生成 签名信息
-    public static Map<String, String> getHeader(String accessKey, String secretKey, User parma) {
+    public static Map<String, String> getHeader(InterfaceInfo params, String accessKey, String secretKey, User parma) {
         Map<String, String> map = new HashMap<>();
         map.put(Constant.ACCESS_KEY, accessKey);
         // 不可直接发送
@@ -30,6 +31,10 @@ public class SignUtils {
         map.put(Constant.NONCE, RandomUtil.randomString(5));
 
         map.put(Constant.DATA, parma.toString());
+
+        map.put(Constant.INTERFACE_ID, params.getId().toString());
+
+        map.put(Constant.USER_ID, params.getUserId().toString());
 
         return map;
     }
