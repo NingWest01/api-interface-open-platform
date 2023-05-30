@@ -1,6 +1,7 @@
 export default {
   'menu.home': '首页',
   'menu.login': '登录',
+  'menu.info': '个人信息',
   'menu.admin': '管理页',
   'menu.admin.interfaceInfo': '接口管理',
   'menu.detail': '详情',

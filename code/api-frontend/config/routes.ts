@@ -37,6 +37,12 @@ export default [
     ],
   },
   {
+    name: 'info',
+    path: '/account/center',
+    component: './User/Info',
+    hideInMenu: true, // 菜单项显示
+  },
+  {
     path: '/admin',
     name: 'admin',
     icon: 'crown',

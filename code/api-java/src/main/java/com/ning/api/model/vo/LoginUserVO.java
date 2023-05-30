@@ -19,6 +19,11 @@ public class LoginUserVO implements Serializable {
     private Long id;
 
     /**
+     * 用户账号
+     */
+    private String userAccount;
+
+    /**
      * 用户昵称
      */
     private String userName;
@@ -37,6 +42,16 @@ public class LoginUserVO implements Serializable {
      * 用户角色：user/admin/ban
      */
     private String userRole;
+
+    /**
+     * ak
+     */
+    private String accessKey;
+
+    /**
+     * sk
+     */
+    private String secretKey;
 
     /**
      * 创建时间

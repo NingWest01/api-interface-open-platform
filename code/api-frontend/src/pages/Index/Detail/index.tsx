@@ -82,6 +82,7 @@ const Index: React.FC = () => {
         } else {
           message.error("发送请求失败")
         }
+        // @ts-ignore
         setDataInfo(data)
       } else {
         // @ts-ignore
