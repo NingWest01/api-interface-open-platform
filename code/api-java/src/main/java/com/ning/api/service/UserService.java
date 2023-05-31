@@ -6,13 +6,14 @@ import com.ning.api.model.dto.user.UserQueryRequest;
 import com.ning.api.model.entity.User;
 import com.ning.api.model.vo.LoginUserVO;
 import com.ning.api.model.vo.UserVO;
+
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 /**
  * 用户服务
-
  */
 public interface UserService extends IService<User> {
 
@@ -116,4 +117,15 @@ public interface UserService extends IService<User> {
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
 
+    /**
+     * 获取密钥
+     *
+     * @param request
+     */
+    void getKey(HttpServletRequest request);
+
+    /**
+     * 刷新密钥
+     */
+    void refreshKey(HttpServletRequest request);
 }

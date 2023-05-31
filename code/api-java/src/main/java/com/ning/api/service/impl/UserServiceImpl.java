@@ -20,6 +20,7 @@ import com.ning.api.utils.SqlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,13 +76,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 放入默认信息
             user.setUserAvatar("http://152.136.145.117:9000/my.bs/pic1.gif");
             user.setUserName("亲~这是默认昵称");
-
-            // 生成 ak、sk
-            String ak = CommonConstant.API_PRE + RandomUtil.randomString(6) + "." + RandomUtil.randomString(10);
-            String sk = CommonConstant.API_PRE + RandomUtil.randomString(10) + "." + RandomUtil.randomString(10);
-            // 放入 ak、sk
-            user.setAccessKey(ak);
-            user.setSecretKey(sk);
 
             boolean saveResult = this.save(user);
             if (!saveResult) {
@@ -279,5 +273,44 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
+    }
+
+    @Override
+    public void getKey(HttpServletRequest request) {
+
+        User user = getLoginUser(request);
+
+        if (Objects.isNull(user)) {
+            throw new BusinessException(ErrorCode.NO_HAVE_USER);
+        }
+
+        // 生成 ak、sk
+        String ak = CommonConstant.API_PRE + RandomUtil.randomString(6) + "." + RandomUtil.randomString(10);
+        String sk = CommonConstant.API_PRE + RandomUtil.randomString(10) + "." + RandomUtil.randomString(10);
+        // 放入 ak、sk
+        user.setAccessKey(ak);
+        user.setSecretKey(sk);
+
+        if (!updateById(user)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
+
+    }
+
+    @Override
+    public void refreshKey(HttpServletRequest request) {
+        User user = getLoginUser(request);
+
+        if (Objects.isNull(user)) {
+            throw new BusinessException(ErrorCode.NO_HAVE_USER);
+        }
+
+        // 重置 ak、sk
+        user.setAccessKey("");
+        user.setSecretKey("");
+
+        if (!updateById(user)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
     }
 }

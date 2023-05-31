@@ -1,6 +1,13 @@
 export default {
   'pages.layouts.userLayout.title': 'API 接口开放平台',
-  'pages.login.accountLogin.tab': '账户密码登录',
+  'pages.login.accountLogin.tab': '用户登录',
+  'pages.login.register.tab': '用户注册',
+  'pages.login.userName.placeholder': '用户账号:',
+  'pages.login.userName.required': '请输入注册账号！',
+  'pages.login.passwordAgain.placeholder': '确认密码:',
+  "pages.login.passwordAgainTwo.required": '请输入确认密码！',
+  "pages.login.tab": '返回登录',
+
   'pages.login.accountLogin.errorMessage': '错误的用户名和密码',
   'pages.login.failure': '登录失败，请重试！',
   'pages.login.success': '登录成功！',
@@ -29,7 +36,7 @@ export default {
   'pages.searchTable.createForm.newRule': '新建规则',
   'pages.searchTable.updateForm.ruleConfig': '规则配置',
   'pages.searchTable.updateForm.basicConfig': '基本信息',
-  'pages.searchTable.updateForm.ruleName.id':'id',
+  'pages.searchTable.updateForm.ruleName.id': 'id',
   'pages.searchTable.updateForm.ruleName.nameLabel': '接口名',
   'pages.searchTable.updateForm.ruleName.url': 'url',
   'pages.searchTable.updateForm.ruleName.nameRules': '请输入规则名称！',

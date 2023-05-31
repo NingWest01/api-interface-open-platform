@@ -1,14 +1,13 @@
 import Footer from '@/components/Footer';
 import {LockOutlined, UserOutlined,} from '@ant-design/icons';
-import {LoginForm, ProFormCheckbox, ProFormText,} from '@ant-design/pro-components';
+import {LoginForm, ProFormText,} from '@ant-design/pro-components';
 import {useEmotionCss} from '@ant-design/use-emotion-css';
-import {FormattedMessage, Helmet, history, useIntl, useModel} from '@umijs/max';
+import {FormattedMessage, Helmet, useIntl} from '@umijs/max';
 import {Alert, message, Tabs} from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, {useState} from 'react';
-import {userLoginUsingPOST} from "@/services/api-frontend/userController";
-import {flushSync} from "react-dom";
-import {Link} from "umi";
+import {userRegisterUsingPOST} from "@/services/api-frontend/userController";
+import {Link} from "@@/exports";
 
 
 const LoginMessage: React.FC<{
@@ -29,7 +28,6 @@ const LoginMessage: React.FC<{
 const Login: React.FC = () => {
   const [userLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
-  const {setInitialState} = useModel('@@initialState');
 
   const containerClassName = useEmotionCss(() => {
     return {
@@ -45,42 +43,9 @@ const Login: React.FC = () => {
 
   const intl = useIntl();
 
-  const handleSubmit = async (values: API.UserLoginRequest) => {
-    try {
-      // 登录
-      const res = await userLoginUsingPOST({...values});
-      let {code, data, msg} = res
-
-      if (code === 0) {
-        // 保存用户的登录态
-        if (data) {
-          const urlParams = new URL(window.location.href).searchParams;
-          if (data) {
-            flushSync(() => {
-              setInitialState({
-                loginUser: data
-              });
-            });
-          }
-          setInitialState({
-            loginUser: data
-          })
-          history.push(urlParams.get('redirect') || '/');
-        }
-      } else {
-        message.error("登陆失败：" + msg);
-      }
-
-    } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
-      });
-      console.log(error);
-      message.error(defaultLoginFailureMessage);
-    }
-  };
   const {status, type: loginType} = userLoginState;
+
+  // 编程时路由跳转
 
   return (
     <div className={containerClassName}>
@@ -106,12 +71,25 @@ const Login: React.FC = () => {
           }}
           logo={<img alt="logo" src="/logo.svg"/>}
           title="Api接口开放平台"
+          submitter={{
+            searchConfig: {
+              submitText: '注册'
+            }
+          }}
           subTitle={intl.formatMessage({id: 'pages.layouts.userLayout.title'})}
           initialValues={{
             autoLogin: true,
           }}
           onFinish={async (values) => {
-            await handleSubmit(values as API.UserLoginRequest)
+            let {code, msg} = await userRegisterUsingPOST(values as API.UserRegisterRequest);
+            if (code === 0 && msg === 'ok') {
+              message.success("注册成功，请去登陆");
+              setTimeout(() => {
+                window.location.replace("/user/login")
+              }, 400)
+            } else {
+              message.error("注册失败");
+            }
           }}
         >
           <Tabs
@@ -122,8 +100,8 @@ const Login: React.FC = () => {
               {
                 key: 'account',
                 label: intl.formatMessage({
-                  id: 'pages.login.accountLogin.tab',
-                  defaultMessage: '用户登录',
+                  id: 'pages.login.register.tab',
+                  defaultMessage: '用户注册',
                 }),
               }
             ]}
@@ -162,6 +140,7 @@ const Login: React.FC = () => {
                 ]}
               />
               <ProFormText.Password
+                id='userPassword'
                 name="userPassword"
                 fieldProps={{
                   size: 'large',
@@ -183,6 +162,29 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
+              <ProFormText.Password
+                id='checkPassword'
+                name="checkPassword"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined/>,
+                }}
+                placeholder={intl.formatMessage({
+                  id: 'pages.login.passwordAgain.placeholder',
+                  defaultMessage: '确认密码: ',
+                })}
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.passwordAgainTwo.required"
+                        defaultMessage="请输入确认密码！"
+                      />
+                    ),
+                  },
+                ]}
+              />
             </>
           )}
           <div
@@ -190,24 +192,26 @@ const Login: React.FC = () => {
               marginBottom: 24,
             }}
           >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
-            </ProFormCheckbox>
             <Link
+              to={{pathname: '/user/login'}}
+            >
+              <FormattedMessage id="pages.login.tab" defaultMessage="返回登录"/>
+
+            </Link>
+            <a
               style={{
                 float: 'right',
               }}
-              to={{pathname: '/user/register'}}
             >
-              <FormattedMessage id="pages.login.register.tab" defaultMessage="没有账号？去注册"/>
-
-            </Link>
+              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
+            </a>
           </div>
         </LoginForm>
       </div>
       <Footer/>
     </div>
-  );
+  )
+    ;
 };
 
 export default Login;

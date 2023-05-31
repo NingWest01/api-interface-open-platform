@@ -18,6 +18,7 @@ public enum ErrorCode {
     STATUS_ERROR(50006, "接口状态信息异常"),
     REQUEST_EXHAUSTION(50007, "接口请求次数耗尽"),
     OBJECT_IS_HAVE(50008, "信息已经存在"),
+    NO_HAVE_USER(50009, "用户不存在"),
     OPERATION_ERROR(50001, "操作失败");
 
 

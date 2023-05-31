@@ -67,6 +67,14 @@ export async function getUserVOByIdUsingGET(
   });
 }
 
+/** getKey POST /api/user/getKey */
+export async function getKeyUsingPOST(options?: { [key: string]: any }) {
+  return request<API.BaseResponsestring>('/api/user/getKey', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
 /** listUserByPage POST /api/user/list/page */
 export async function listUserByPageUsingPOST(
   body: API.UserQueryRequest,
@@ -130,6 +138,14 @@ export async function userLoginByWxOpenUsingGET(
 /** userLogout POST /api/user/logout */
 export async function userLogoutUsingPOST(options?: { [key: string]: any }) {
   return request<API.BaseResponseboolean>('/api/user/logout', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
+/** refreshKey POST /api/user/refreshKey */
+export async function refreshKeyUsingPOST(options?: { [key: string]: any }) {
+  return request<API.BaseResponsestring>('/api/user/refreshKey', {
     method: 'POST',
     ...(options || {}),
   });

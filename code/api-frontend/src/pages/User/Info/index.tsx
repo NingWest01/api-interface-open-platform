@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Image, Divider, Button, message} from 'antd';
+import {Button, Card, Divider, Image, message} from 'antd';
 import {
-  UserOutlined,
-  TeamOutlined,
-  VerifiedOutlined,
+  CopyTwoTone,
   FieldTimeOutlined,
-  UnlockOutlined,
   InsuranceOutlined,
-  CopyTwoTone
+  TeamOutlined,
+  UnlockOutlined,
+  UserOutlined,
+  VerifiedOutlined
 } from '@ant-design/icons';
-import {getLoginUserUsingGET} from "@/services/api-frontend/userController";
+import {getKeyUsingPOST, getLoginUserUsingGET, refreshKeyUsingPOST} from "@/services/api-frontend/userController";
 import copy from "copy-to-clipboard";
 
 const Info: React.FC = () => {
@@ -33,23 +33,42 @@ const Info: React.FC = () => {
     getUserInfo()
   }, [])
 
-
   /**
    * 重置密钥
    */
-  const reset = () => {
-    console.log("重置密钥")
+  const reset = async () => {
+    let {code} = await refreshKeyUsingPOST();
+    if (code === 0) {
+      message.success("密钥重置成功");
+      setTimeout(() => {
+        window.location.replace("/account/center")
+      }, 400)
+    } else {
+      message.error("密钥重置失败，请资讯管理员！当然暂时资讯不了 ^_^");
+    }
   }
   /**
    * 申请密钥
    */
-  const applyFor = () => {
-    console.log("申请密钥")
+  const applyFor = async () => {
+    let {code} = await getKeyUsingPOST();
+    if (code === 0) {
+      message.success("密钥获取成功");
+      setTimeout(() => {
+        window.location.replace("/account/center")
+      }, 400)
+    } else {
+      message.error("密钥获取失败，请资讯管理员！当然暂时资讯不了 ^_^");
+    }
   }
   /**
    * 复制ak
    */
   const copyAk = (ak: string) => {
+    if (ak === undefined || ak === null || ak.length === 0) {
+      message.error("accessKey 不存在，请先申请")
+      return
+    }
     copy(ak);
     message.success("accessKey 复制成功！")
   }
@@ -57,6 +76,10 @@ const Info: React.FC = () => {
    * 复制sk
    */
   const copySk = (sk: string) => {
+    if (sk === undefined || sk === null || sk.length === 0) {
+      message.error("secretKey 不存在，请先申请")
+      return
+    }
     copy(sk);
     message.success("secretKey 复制成功！")
   }
@@ -102,7 +125,8 @@ const Info: React.FC = () => {
           <CopyTwoTone onClick={() => copySk(userInfo?.secretKey as string)} style={{fontSize: '16px'}}/>
         </div>
         <Divider style={{marginBottom: '50px'}}/>
-        <Button onClick={() => applyFor()} type="primary" size='middle' style={{boxShadow: '5px 5px 5px grey'}}>
+        <Button onClick={() => applyFor()} type="primary" size='middle'
+                style={{boxShadow: '5px 5px 5px grey'}}>
           申请密钥
         </Button>
         <Button onClick={() => reset()} danger style={{marginLeft: '50px', boxShadow: '5px 5px 5px grey'}}

@@ -20,15 +20,15 @@ const Footer: React.FC = () => {
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
-          key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
-          href: 'https://pro.ant.design',
+          key: 'yu-Ai',
+          title: '🐟Ai',
+          href: 'https://www.yucongming.com/nav',
           blankTarget: true,
         },
         {
-          key: 'github',
-          title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+          key: 'yupi',
+          title: '鱼皮知识星球',
+          href: 'http://yupi.icu',
           blankTarget: true,
         },
         {
